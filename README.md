@@ -1,1 +1,1 @@
-## 128-bits Kuznechik
+## 128-bit Kuznechik
