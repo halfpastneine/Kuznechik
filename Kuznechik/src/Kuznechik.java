@@ -1,6 +1,6 @@
 public class Kuznechik {
     private final static byte[][] constants = new byte[32][16];
-    private static final byte[][] keys = new byte[10][64];
+    private static final byte[][] keys = new byte[10][16];
 
     public static byte[] X(byte[] A, byte[] B) {
         byte[] c = new byte[16];
