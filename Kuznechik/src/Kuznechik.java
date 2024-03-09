@@ -1,6 +1,6 @@
 public class Kuznechik {
     private final static byte[][] constants = new byte[32][16];
-    private static final byte[][] keys = new byte[10][16];
+    public static final byte[][] keys = new byte[10][16];
 
     public static byte[] X(byte[] A, byte[] B) {
         byte[] c = new byte[16];
@@ -41,6 +41,15 @@ public class Kuznechik {
     }
 
     public static byte[] R(byte[] A) {
+        byte[] B = new byte[16];
+        for (int i = 1; i < 16; i++) {
+            A[15] ^= LMul(B[i] = A[i - 1], Const.L_VEC[i]);
+        }
+        B[0] = A[15];
+        return B;
+    }
+
+    public static byte[] RReverse(byte[] A) {
         byte a = 0;
         byte[] B = new byte[16];
         for (int i = 15; i >= 0; i--) {
@@ -50,33 +59,24 @@ public class Kuznechik {
         return B;
     }
 
-    public static byte[] RReverse(byte[] A) {
-        byte[] B = new byte[16];
-        for (int i = 1; i < 16; i++) {
-            A[15] ^= LMul(B[i] = A[i - 1], Const.L_VEC[i]);
-        }
-        B[0] = A[15];
-        return B;
-    }
-
     public static byte[] L(byte[] A) {
-        for (int i = 0; i < 16; i++) {
+        for (int i = 0; i < 16; i++)
             A = R(A);
-        }
         return A;
     }
-
 
     public static byte[] LReverse(byte[] A) {
-        for (int i = 0; i < 16; i++)
+        for (int i = 0; i < 16; i++) {
             A = RReverse(A);
+        }
         return A;
     }
+
 
     private static void genConst() {
         for (int i = 0; i < 32; i++) {
             byte[] tmp = new byte[16];
-            tmp[0] = (byte) (i + 1);
+            tmp[15] = (byte) (i + 1);
             constants[i] = L(tmp);
         }
     }
